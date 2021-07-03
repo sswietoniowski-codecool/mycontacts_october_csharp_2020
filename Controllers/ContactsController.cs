@@ -46,6 +46,19 @@ namespace MyContacts.WebApi.Controllers
         [HttpPost]
         public IActionResult CreateContact([FromBody] CreateContactDto createContactDto)
         {
+            if (createContactDto.FirstName == createContactDto.LastName)
+            {
+                ModelState.AddModelError(
+                        key: "Description",
+                        errorMessage: "It is unlikely that first name and last name are the same ;-)"
+                    );
+            }
+            
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var maxId = DataService.Current.Contacts.Max(c => c.Id);
 
             var contactDto = new ContactDto
