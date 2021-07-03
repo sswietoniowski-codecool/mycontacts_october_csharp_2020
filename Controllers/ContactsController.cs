@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using MyContacts.WebApi.Infrastructure;
 using MyContacts.WebApi.Models;
@@ -107,6 +108,64 @@ namespace MyContacts.WebApi.Controllers
             }
 
             DataService.Current.Contacts.Remove(contactDto);
+
+            return NoContent();
+        }
+
+        // PATCH api/contacts/1
+        // http://jsonpatch.com/
+        // [
+        // {
+        //     "op": "add",
+        //     "path": "/name",
+        //     "value": "new name"
+        // },
+        // {
+        //     "op": "replace",
+        //     "path": "/description",
+        //     "value": "new description"
+        // }
+        // ]   
+        [HttpPatch("{id}")]
+        public IActionResult PartialUpdateContact(int id, [FromBody] JsonPatchDocument<UpdateContactDto> patchDocument)
+        {
+            var contactDto = DataService.Current.Contacts.FirstOrDefault(c => c.Id == id);
+
+            if (contactDto == null)
+            {
+                return NotFound();
+            }
+
+            var contactToBePatched = new UpdateContactDto()
+            {
+                FirstName = contactDto.FirstName,
+                LastName = contactDto.LastName,
+                Email = contactDto.Email
+            };
+
+            patchDocument.ApplyTo(contactToBePatched);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            if (contactToBePatched.FirstName == contactToBePatched.LastName)
+            {
+                ModelState.AddModelError(
+                    key: "Description",
+                    errorMessage: "It is unlikely that first name and last name are the same ;-)"
+                );
+            }
+
+            if (!TryValidateModel(contactToBePatched))
+            {
+                return BadRequest();
+            }
+
+            contactDto.FirstName = contactToBePatched.FirstName;
+            contactDto.LastName = contactToBePatched.LastName;
+            contactDto.Email = contactToBePatched.Email;
 
             return NoContent();
         }
