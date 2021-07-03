@@ -20,5 +20,19 @@ namespace MyContacts.WebApi.Controllers
 
             return Ok(contactsDto);
         }
+
+        // GET http://localhost:33333/api/contacts/1
+        [HttpGet("{id:int}")]
+        public IActionResult GetContact(int id)
+        {
+            var contactDto = DataService.Current.Contacts.FirstOrDefault(c => c.Id == id);
+
+            if (contactDto == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(contactDto);
+        }
     }
 }
