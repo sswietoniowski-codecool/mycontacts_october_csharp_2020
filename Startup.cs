@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace MyContacts.WebApi
 {
@@ -28,6 +29,20 @@ namespace MyContacts.WebApi
         {
 
             services.AddControllers();
+                //    // wymusza honorowanie Accept od klienta
+                //    (config =>
+                //        {
+                //            config.RespectBrowserAcceptHeader = true;
+                //            config.ReturnHttpNotAcceptable = true;
+                //        }
+                //    )
+                //    // pozwala zwróciæ wynik jako XML
+                //.AddMvcOptions(options =>
+                //{
+                //    options.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+                //});
+
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MyContacts.WebApi", Version = "v1" });

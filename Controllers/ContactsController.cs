@@ -3,23 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MyContacts.WebApi.Infrastructure;
 
 namespace MyContacts.WebApi.Controllers
 {
     [ApiController]
+    //[Route("api/contacts")]
+    [Route("api/[controller]")]
     public class ContactsController : ControllerBase
     {
         // GET http://localhost:33333/api/contacts
-        [HttpGet("api/contacts")]
+        [HttpGet]
         public IActionResult GetContacts()
         {
-            return new JsonResult(
-                new List<object>()
-                {
-                    new { Id = 1, FirstName = "Jan", LastName = "Kowalski", Email = "jkowalski@unknown.com" },
-                    new { Id = 1, FirstName = "Anna", LastName = "Nowak", Email = "anowak@unknown.com" }
-                }
-            );
+            var contactsDto = DataService.Current.Contacts;
+
+            return Ok(contactsDto);
         }
     }
 }
