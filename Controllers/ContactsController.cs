@@ -95,5 +95,20 @@ namespace MyContacts.WebApi.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteContact(int id)
+        {
+            var contactDto = DataService.Current.Contacts.FirstOrDefault(c => c.Id == id);
+
+            if (contactDto == null)
+            {
+                return NotFound();
+            }
+
+            DataService.Current.Contacts.Remove(contactDto);
+
+            return NoContent();
+        }
     }
 }
