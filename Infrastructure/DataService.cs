@@ -31,7 +31,7 @@ namespace MyContacts.WebApi.Infrastructure
                         },
                         new PhoneDto
                         {
-                            Id = 1,
+                            Id = 2,
                             Number = "222-222-2222",
                             Description = "Praca"
                         }

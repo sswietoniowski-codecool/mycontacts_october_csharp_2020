@@ -23,5 +23,25 @@ namespace MyContacts.WebApi.Controllers
 
             return Ok(contactDto.Phones);
         }
+
+        [HttpGet("{id:int}")]
+        public IActionResult GetPhone(int contactId, int id)
+        {
+            var contactDto = DataService.Current.Contacts.FirstOrDefault(c => c.Id == contactId);
+
+            if (contactDto == null)
+            {
+                return NotFound();
+            }
+
+            var phoneDto = contactDto.Phones.FirstOrDefault(p => p.Id == id);
+
+            if (phoneDto == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(phoneDto);
+        }
     }
 }
