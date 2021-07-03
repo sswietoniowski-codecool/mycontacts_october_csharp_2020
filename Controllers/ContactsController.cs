@@ -73,5 +73,27 @@ namespace MyContacts.WebApi.Controllers
 
             return CreatedAtRoute("GetContact", new {id = contactDto.Id}, contactDto);
         }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateContact(int id, [FromBody] UpdateContactDto updateContactDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var contactDto = DataService.Current.Contacts.FirstOrDefault(c => c.Id == id);
+
+            if (contactDto == null)
+            {
+                return NotFound();
+            }
+
+            contactDto.FirstName = updateContactDto.FirstName;
+            contactDto.LastName = updateContactDto.LastName;
+            contactDto.Email = updateContactDto.Email;
+
+            return NoContent();
+        }
     }
 }
