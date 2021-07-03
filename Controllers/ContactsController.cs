@@ -13,6 +13,7 @@ namespace MyContacts.WebApi.Controllers
     [Route("api/[controller]")]
     public class ContactsController : ControllerBase
     {
+        // GET http://localhost:33333/api/contacts
         // GET http://localhost:33333/api/contacts?like=ski
         [HttpGet]
         public IActionResult GetContacts([FromQuery] string like)
@@ -41,6 +42,7 @@ namespace MyContacts.WebApi.Controllers
             return Ok(contactDto);
         }
 
+        // POST http://localhost:33333/api/contacts
         [HttpPost]
         public IActionResult CreateContact([FromBody] CreateContactDto createContactDto)
         {
