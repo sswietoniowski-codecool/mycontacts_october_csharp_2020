@@ -14,7 +14,8 @@ namespace MyContacts.WebApi.Models
         [Required]
         [MaxLength(64)]
         public string LastName { get; set; }
-        //[DataType(DataType.EmailAddress)]
+        //[DataType(DataType.EmailAddress)] this is not validation, but only presentation
+        [EmailAddress]
         public string Email { get; set; }
     }
 }
